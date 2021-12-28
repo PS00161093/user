@@ -1,4 +1,4 @@
-package com.learning.ps.restapp;
+package com.learning.ps.restapp.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
