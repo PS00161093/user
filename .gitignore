@@ -1,0 +1,11 @@
+/.idea/
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/dbnavigator.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/codeStyles/Project.xml
+/restapp.iml
+/.idea/user.iml
+/.idea/vcs.xml
+/target/
+/target/test-classes/com/learning/ps/restapp/RestappApplicationTests.class
