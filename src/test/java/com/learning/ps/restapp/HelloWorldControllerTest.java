@@ -26,4 +26,11 @@ class HelloWorldControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json("{\"message\":\"Hello Bean World!\"}"));
     }
+
+    @Test
+    void helloWorldWithPathVariable() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/hello-world-path-variable/superman"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json("{\"message\":\"Hello, superman!\"}"));
+    }
 }
