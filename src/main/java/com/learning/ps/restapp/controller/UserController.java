@@ -3,9 +3,7 @@ package com.learning.ps.restapp.controller;
 import com.learning.ps.restapp.dao.UserRepository;
 import com.learning.ps.restapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +21,10 @@ public class UserController {
     @GetMapping(path = "users/{id}")
     public User getUser(@PathVariable int id) {
         return userRepository.findOne(id);
+    }
+
+    @PostMapping(path = "/users/")
+    public User createUser(@RequestBody User newUser) {
+        return userRepository.saveUser(newUser);
     }
 }
