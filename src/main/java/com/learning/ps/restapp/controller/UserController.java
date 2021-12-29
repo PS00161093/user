@@ -41,4 +41,9 @@ public class UserController {
 
         return ResponseEntity.created(userLocation).build();
     }
+
+    @DeleteMapping(path = "users/{id}")
+    public User deleteUser(@PathVariable int id) {
+        return userRepository.deleteById(id);
+    }
 }

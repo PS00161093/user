@@ -1,12 +1,10 @@
 package com.learning.ps.restapp.dao;
 
+import com.learning.ps.restapp.exception.UserNotFoundException;
 import com.learning.ps.restapp.model.User;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 public class UserRepository {
@@ -33,5 +31,15 @@ public class UserRepository {
 
     public User findOne(int id) {
         return users.stream().filter(user -> user.getId() == id).findFirst().orElse(null);
+    }
+
+    public User deleteById(int id) {
+        User deleteUser = users.stream()
+                .filter(user -> user.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new UserNotFoundException(String.format("User not found with id = %d", id)));
+
+        users.remove(deleteUser);
+        return deleteUser;
     }
 }
