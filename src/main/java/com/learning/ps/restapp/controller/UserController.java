@@ -3,8 +3,11 @@ package com.learning.ps.restapp.controller;
 import com.learning.ps.restapp.dao.UserRepository;
 import com.learning.ps.restapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -24,7 +27,14 @@ public class UserController {
     }
 
     @PostMapping(path = "/users/")
-    public User createUser(@RequestBody User newUser) {
-        return userRepository.saveUser(newUser);
+    public ResponseEntity<Object> createUser(@RequestBody User newUser) {
+        User createUser = userRepository.saveUser(newUser);
+        URI userLocation = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createUser.getId())
+                .toUri();
+
+        return ResponseEntity.created(userLocation).build();
     }
 }
