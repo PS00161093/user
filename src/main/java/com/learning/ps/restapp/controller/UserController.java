@@ -1,6 +1,7 @@
 package com.learning.ps.restapp.controller;
 
 import com.learning.ps.restapp.dao.UserRepository;
+import com.learning.ps.restapp.exception.UserNotFoundException;
 import com.learning.ps.restapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class UserController {
@@ -23,7 +25,9 @@ public class UserController {
 
     @GetMapping(path = "users/{id}")
     public User getUser(@PathVariable int id) {
-        return userRepository.findOne(id);
+        User user = userRepository.findOne(id);
+        if (Objects.isNull(user)) throw new UserNotFoundException("id: " + id);
+        return user;
     }
 
     @PostMapping(path = "/users/")
