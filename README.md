@@ -7,7 +7,7 @@
 - Headers versioning
 - URI versioning
 - Request parameter versioning
-###Factors to conside while choosing versioning type:
+###Factors to consider while choosing versioning type:
  - URI pollution
  - Misue of HTTP header
  - Caching
