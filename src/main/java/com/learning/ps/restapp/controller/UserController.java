@@ -1,5 +1,8 @@
 package com.learning.ps.restapp.controller;
 
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.learning.ps.restapp.dao.UserRepository;
 import com.learning.ps.restapp.exception.UserNotFoundException;
 import com.learning.ps.restapp.model.User;
@@ -7,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,8 +26,13 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping(path = "/users")
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public MappingJacksonValue getUsers() {
+        List<User> users = userRepository.findAll();
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id", "name");
+        FilterProvider filters = new SimpleFilterProvider().addFilter("dobFilter", filter);
+        MappingJacksonValue filteredUsers = new MappingJacksonValue(users);
+        filteredUsers.setFilters(filters);
+        return filteredUsers;
     }
 
     @GetMapping(path = "users/{id}")

@@ -1,14 +1,17 @@
 package com.learning.ps.restapp.model;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
+@JsonFilter("dobFilter")
 public class User {
 
     private Integer id;
 
-    @Size(min = 2, message = "Name should have atleast 2 chars.")
+    @Size(min = 2, message = "Name should have at least 2 chars.")
     private String name;
 
     @Past
