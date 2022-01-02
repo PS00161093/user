@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.learning.ps.restapp.dao.UserRepository;
+import com.learning.ps.restapp.domain.User;
 import com.learning.ps.restapp.exception.UserNotFoundException;
-import com.learning.ps.restapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -17,7 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -37,9 +37,9 @@ public class UserController {
 
     @GetMapping(path = "users/{id}")
     public EntityModel<User> getUser(@PathVariable int id) {
-        User user = userRepository.findOne(id);
-        if (Objects.isNull(user)) throw new UserNotFoundException("id: " + id);
-        EntityModel<User> model = EntityModel.of(user);
+        Optional<User> user = userRepository.findById(id);
+        user.orElseThrow(() -> new UserNotFoundException("id: " + id));
+        EntityModel<User> model = EntityModel.of(user.get());
         WebMvcLinkBuilder linkToUsers = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getUsers());
         model.add(linkToUsers.withRel("all-users"));
         return model;
@@ -47,7 +47,7 @@ public class UserController {
 
     @PostMapping(path = "/users/")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User newUser) {
-        User createUser = userRepository.saveUser(newUser);
+        User createUser = userRepository.save(newUser);
         URI userLocation = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -58,7 +58,7 @@ public class UserController {
     }
 
     @DeleteMapping(path = "users/{id}")
-    public User deleteUser(@PathVariable int id) {
-        return userRepository.deleteById(id);
+    public void deleteUser(@PathVariable int id) {
+        userRepository.deleteById(id);
     }
 }

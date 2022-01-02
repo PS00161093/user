@@ -18,16 +18,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class UserRepositoryTest {
+public class UserDummyRepositoryTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserDummyRepository userDummyRepository;
 
     @Test
     @Order(1)
     public void testFindAllShouldReturnAllDefaultUsers() {
         List<User> expectedUsers = generateDefaultUsers();
-        List<User> actualUsers = userRepository.findAll();
+        List<User> actualUsers = userDummyRepository.findAll();
 
         assertThat(actualUsers.size()).isEqualTo(expectedUsers.size());
         actualUsers.stream().map(user -> expectedUsers.stream().anyMatch(u -> u.getId().equals(user.getId()))).forEach(Assertions::assertTrue);
@@ -38,11 +38,11 @@ public class UserRepositoryTest {
     @Order(2)
     public void testCreateUserShouldCreateANewUser() {
         User newUser = new User(4, "Chandler", new Date());
-        User createdUser = userRepository.saveUser(newUser);
+        User createdUser = userDummyRepository.saveUser(newUser);
 
         List<User> expectedUsers = generateDefaultUsers();
         expectedUsers.add(newUser);
-        List<User> actualUsers = userRepository.findAll();
+        List<User> actualUsers = userDummyRepository.findAll();
 
         assertNotNull(createdUser);
         assertThat(actualUsers.size()).isEqualTo(expectedUsers.size());
@@ -53,7 +53,7 @@ public class UserRepositoryTest {
     @Test
     @Order(3)
     public void testGetUserShouldReturnAUser() {
-        User user = userRepository.findOne(4);
+        User user = userDummyRepository.findOne(4);
         assertNotNull(user);
         assertThat(user.getId()).isEqualTo(4);
     }

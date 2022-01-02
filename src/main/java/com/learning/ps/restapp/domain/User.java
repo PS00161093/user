@@ -9,7 +9,7 @@ import java.util.Date;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue()
     private Integer id;
 
     private String name;
@@ -20,6 +20,9 @@ public class User {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
+    }
+
+    public User() {
     }
 
     public Integer getId() {
