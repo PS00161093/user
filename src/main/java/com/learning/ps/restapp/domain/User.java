@@ -1,20 +1,22 @@
 package com.learning.ps.restapp.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class User {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue
     private Integer id;
 
     private String name;
 
     private Date birthDate;
+
+    @OneToMany(mappedBy = "byUser")
+    private List<Post> posts;
 
     public User(Integer id, String name, Date birthDate) {
         this.id = id;
@@ -47,5 +49,13 @@ public class User {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 }
