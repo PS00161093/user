@@ -72,4 +72,18 @@ public class UserController {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found!"));
         return user.getPosts();
     }
+
+    @PostMapping(path = "users/{userId}/posts")
+
+    public ResponseEntity<Object> createPost(@PathVariable int userId, @RequestBody Post newPost) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found!"));
+        newPost.setByUser(user);
+        Post createdPost = postRepository.save(newPost);
+        URI userLocation = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .buildAndExpand(createdPost.getId())
+                .toUri();
+
+        return ResponseEntity.created(userLocation).build();
+    }
 }
